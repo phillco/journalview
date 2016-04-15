@@ -1,0 +1,148 @@
+body {
+    font-family: Avenir, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+}
+
+body, html {
+    overflow-y: hidden;
+}
+
+h1 {
+    font-size: 16px;
+}
+
+h2, h3 {
+    font-size: 14px;
+}
+
+@font-face {
+    font-family: FixEmoji;
+    unicode-range: U+20;
+    src: local("Arial");
+}
+
+.big-error {
+    margin: 20px;
+    font-size: 16px;
+}
+
+.big-error.global-error {
+    color: #bc2b00;
+}
+
+.big-error.console-error {
+    color: #d17200;
+}
+
+.big-error.console-warn {
+    color: #a08700;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    max-height: 900px;
+}
+
+.entries {
+    width: 350px;
+    float: left;
+    padding: 0;
+    border-right: 1px solid #eee;
+}
+
+.entries-list {
+    padding: 10px;
+}
+
+.entries-list-ul {
+    padding: 0;
+    margin: 8px 0;
+}
+
+.entries-list-ul li {
+    list-style: none;
+    margin: 1px 0;
+}
+
+.entries-list-search-area {
+    margin: 0;
+    padding: 15px 17px 15px 17px;
+    border-bottom: 1px solid #eee;
+}
+
+input.entries-list-search-box {
+    padding: 3px;
+    width: 250px;
+    margin-left: 5px;
+    font-family: Avenir, sans-serif;
+    font-size: 14px;
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.search-result {
+    margin: 15px 0;
+}
+
+.search-result-title {
+    font-weight: bold;
+    color: #000;
+}
+
+.search-result-snippet {
+    color: #666;
+}
+
+.search-result-snippet em {
+    border-radius: 3px;
+    background-color: #b2dcff;
+    padding: 1px 2px;
+    /*margin-left: 1px;*/
+    /*margin-right: 1px;*/
+}
+
+.entries-list-group-header {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.entries-list-item {
+    border-radius: 3px;
+}
+
+.entries-list-item:hover {
+    background-color: #eee;
+}
+
+.entries-list-item.sticky {
+    background-color: #ddd;
+}
+
+.viewer {
+    padding: 10px 20px;
+    margin-left: 350px;
+}
+
+.viewer-full-page {
+    padding: 10px 20px;
+}
+
+.post-info-title {
+    font-family: FixEmoji, Avenir, sans-serif;
+}
+
+.post-info-date {
+    color: #666;
+}
+
+.entry-item.hover {
+    background-color: #eee;
+}
+
+.entry-item.stuck {
+    background-color: #ddd;
+}

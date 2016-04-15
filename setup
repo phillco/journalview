@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ -z "$(which brew)" ]]; then
+  echo "You don't seem to have Homebrew. Press enter to install it, or Ctrl+C to cancel."
+  read _
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+echo "Installing elasticsearch..."
+brew install elasticsearch
+
+echo "Installing necessary gems..."
+sudo gem install bundler
+bundle install
+
+echo "Done!"
