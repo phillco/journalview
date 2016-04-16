@@ -69,12 +69,24 @@ get '/entries' do
         highlight: {
             fields: {"Entry Text": {"fragment_size": 200}}
         }
-    })["hits"]['hits'])
+    })['hits']['hits'])
   else
     entries = parser.entries.map { |e| e.select { |k, v| ['Creation Date', 'Title', 'UUID'].include?(k) } }
     entries_by_month = entries.group_by { |entry| "#{entry['Creation Date'].month}/#{entry['Creation Date'].year}" }
     JSON::dump(entries_by_month)
   end
+end
+
+get '/similar-to/:id' do
+  @search_client ||= Elasticsearch::Client.new(log: false)
+  JSON::dump(@search_client.search(index: 'journalview', body: {
+      query: {
+          more_like_this: {
+              fields: ['Entry Text'],
+              like: [_index: 'journalview', _type: 'entry', _id: params['id']]
+          }
+      }
+  })['hits']['hits'])
 end
 
 get '/entry/:id' do

@@ -107,10 +107,26 @@ var ListView = React.createClass({
 });
 
 var Viewer = React.createClass({
+  getInitialState: function () {
+    return {related: null};
+  },
+  fetchRelatedEntries: function () {
+    var self = this;
+    $.getJSON('/similar-to/' + this.props.UUID, function (data) {
+      self.setState({related: data});
+    });
+  },
+  componentDidMount: function () {
+    this.fetchRelatedEntries();
+  },
+  componentWillReceiveProps: function () {
+    this.fetchRelatedEntries();
+  },
   render: function () {
     if (!this.props.Title) {
       return React.DOM.div();
     }
+    var self = this;
     var date = new Date(this.props['Creation Date']);
     return React.DOM.div(null,
       React.DOM.div({className: 'post-info'},
@@ -118,7 +134,21 @@ var Viewer = React.createClass({
         React.DOM.div({className: 'post-info-date'},
           date.toLocaleDateString() + ' ' + date.toLocaleTimeString())
       ),
-      React.DOM.div({dangerouslySetInnerHTML: {__html: this.props.HTML}}));
+      React.DOM.div({dangerouslySetInnerHTML: {__html: this.props.HTML}}),
+      this.state.related ?
+        React.DOM.div({className: 'related-entries'},
+          React.DOM.h1({}, "Related Entries"),
+          React.DOM.ul({},
+            (this.state.related || []).map(function (related) {
+              return React.DOM.li({key: related._source.UUID},
+                React.DOM.a({
+                  href: '/html/entry/' + related._source.UUID,
+                  onClick: self.props.onEntryClick.bind(this, related._source.UUID)
+                }, related._source.Title),
+                React.DOM.div({}, related._source['Entry Text'].substring(0, 200) + '...'))
+            }))
+        ) : null
+    );
   }
 });
 
@@ -200,8 +230,13 @@ var App = React.createClass({
           });
         }
       });
-    } else {
-      var viewer = React.createFactory(Viewer)(this.state.currentlyViewingEntry);
+    } else if (this.state.currentlyViewingEntry) {
+      var viewer = React.createFactory(Viewer)(Object.assign(this.state.currentlyViewingEntry, {
+        onEntryClick: function (id, e) {
+          self.fetch(id, true /* sticky */, true /* scroll */);
+          e.preventDefault();
+        }
+      }));
     }
 
     var listView = React.createFactory(ListView)({
