@@ -1,4 +1,4 @@
-/** Error handling */
+/** Make uncaught errors and console errors more obvious by replacing the DOM with them. */
 (function () {
   function renderError(error, className) {
     try {
@@ -23,6 +23,16 @@
   window.onerror = function (e) {
     renderError(e, 'global-error');
   };
+
+  // Make alert() more useful:
+  var __nativeAlert = window.alert;
+  window.alert = function (obj) {
+    if (_.isObject(obj) || _.isArray(obj)) {
+      __nativeAlert(JSON.stringify(obj));
+    } else {
+      __nativeAlert(obj);
+    }
+  }
 })();
 
 var ListViewEntry = React.createClass({
