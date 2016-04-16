@@ -62,11 +62,13 @@ class Parser
         base_entry['Title'] = first_line[0..59] + '…'
       else
         base_entry['Title'] = first_line
-        base_entry['Entry Text'] = base_entry['Entry Text'][first_line.length..-1].strip
+        base_entry['Entry Text'] = base_entry['Entry Text'][first_line.length..-1]
       end
     else
       base_entry['Title'] = 'Untitled'
     end
+
+    base_entry['Title'] = base_entry['Title'].gsub(/[#\*]/, '').strip
     base_entry
   end
 end
