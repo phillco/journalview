@@ -129,26 +129,30 @@ var Viewer = React.createClass({
     }
     var self = this;
     var date = new Date(this.props['Creation Date']);
-    return React.DOM.div(null,
-      React.DOM.div({className: 'post-info'},
-        React.DOM.h1({className: 'post-info-title'}, this.props.Title),
-        React.DOM.div({className: 'post-info-date'},
-          date.toLocaleDateString() + ' ' + date.toLocaleTimeString())
+    return React.DOM.div({},
+      React.DOM.div({className: 'scrollable meta-pane'},
+        this.state.related ?
+          React.DOM.div({className: 'related-entries'},
+            React.DOM.h1({}, "Related Entries"),
+            React.DOM.ul({},
+              (this.state.related || []).map(function (related) {
+                return React.DOM.li({key: related._source.UUID},
+                  React.DOM.a({
+                    href: '/html/entry/' + related._source.UUID,
+                    onClick: self.props.onEntryClick.bind(this, related._source.UUID)
+                  }, related._source.Title),
+                  React.DOM.div({}, related._source['Entry Text'].substring(0, 200) + '...'))
+              }))
+          ) : null
       ),
-      React.DOM.div({dangerouslySetInnerHTML: {__html: this.props.HTML}}),
-      this.state.related ?
-        React.DOM.div({className: 'related-entries'},
-          React.DOM.h1({}, "Related Entries"),
-          React.DOM.ul({},
-            (this.state.related || []).map(function (related) {
-              return React.DOM.li({key: related._source.UUID},
-                React.DOM.a({
-                  href: '/html/entry/' + related._source.UUID,
-                  onClick: self.props.onEntryClick.bind(this, related._source.UUID)
-                }, related._source.Title),
-                React.DOM.div({}, related._source['Entry Text'].substring(0, 200) + '...'))
-            }))
-        ) : null
+      React.DOM.div({className: 'scrollable viewer'},
+        React.DOM.div({className: 'post-info'},
+          React.DOM.h1({className: 'post-info-title'}, this.props.Title),
+          React.DOM.div({className: 'post-info-date'},
+            date.toLocaleDateString() + ' ' + date.toLocaleTimeString())
+        ),
+        React.DOM.div({dangerouslySetInnerHTML: {__html: this.props.HTML}})
+      )
     );
   }
 });
@@ -174,7 +178,7 @@ var SearchResult = React.createClass({
 var SearchResultsView = React.createClass({
   render: function () {
     var self = this;
-    return React.DOM.div({}, this.props.results.length + " results:",
+    return React.DOM.div({className: 'scrollable viewer'}, this.props.results.length + " results:",
       this.props.results.map(function (result) {
         return React.createFactory(SearchResult)(Object.assign(result, {
           key: result._source.UUID,
@@ -265,8 +269,7 @@ var App = React.createClass({
       }
     });
 
-    return React.DOM.div({}, listView,
-      React.DOM.div({className: 'scrollable viewer'}, viewer, searchResultsView));
+    return React.DOM.div({}, listView, viewer, searchResultsView);
   }
 });
 

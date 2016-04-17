@@ -72,6 +72,15 @@ h2, h3 {
     margin: 1px 0;
 }
 
+.related-entries ul {
+    padding: 0;
+}
+
+.related-entries li {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
 .entries-list-search-area {
     margin: 0;
     padding: 15px 17px 15px 17px;
@@ -151,4 +160,10 @@ input.entries-list-search-box {
 
 .entry-item.stuck {
     background-color: #ddd;
+}
+
+.meta-pane {
+    float: right;
+    width: 250px;
+    padding: 10px;
 }
