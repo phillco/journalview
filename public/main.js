@@ -121,6 +121,7 @@ var Viewer = React.createClass({
   },
   componentWillReceiveProps: function () {
     this.fetchRelatedEntries();
+    $('.viewer').scrollTop(0); // Fix jQuery
   },
   render: function () {
     if (!this.props.Title) {
